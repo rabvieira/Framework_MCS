@@ -1,0 +1,136 @@
+=== Setup run 1 ===
+Dataset: ephenology_all-5-fold-1-06B.tra_val
+Folds: 5
+=== 5-fold Cross-validation run 1===
+Correctly Classified Instances         341               47.7591 %
+Incorrectly Classified Instances       373               52.2409 %
+Kappa statistic                          0.2417
+K&B Relative Info Score              16201.3992 %
+K&B Information Score                  362.4592 bits      0.5076 bits/instance
+Class complexity | order 0            1592.8902 bits      2.2309 bits/instance
+Class complexity | scheme             2425.7938 bits      3.3975 bits/instance
+Complexity improvement     (Sf)       -832.9035 bits     -1.1665 bits/instance
+Mean absolute error                      0.223 
+Root mean squared error                  0.3344
+Relative absolute error                 89.1526 %
+Root relative squared error             94.6089 %
+Total Number of Instances              714     
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   <-- classified as
+   0   1   0  76   0   0 |   a = A.tomentosum
+   0 223   0  54   0   0 |   b = C.brasiliensis
+   0  27   0   2   0   0 |   c = M.guianensis
+   0  38   0 118   0   0 |   d = M.rubiginosa
+   0   4   0  36   0   0 |   e = P.ramiflora
+   0  97   0  38   0   0 |   f = P.torta
+
+=== Setup run 2 ===
+Dataset: ephenology_all-5-fold-2-06B.tra_val
+Folds: 5
+=== 5-fold Cross-validation run 2===
+Correctly Classified Instances         342               47.8992 %
+Incorrectly Classified Instances       372               52.1008 %
+Kappa statistic                          0.2435
+K&B Relative Info Score              16258.9667 %
+K&B Information Score                  363.7471 bits      0.5094 bits/instance
+Class complexity | order 0            1592.8902 bits      2.2309 bits/instance
+Class complexity | scheme             3485.6836 bits      4.8819 bits/instance
+Complexity improvement     (Sf)      -1892.7934 bits     -2.651  bits/instance
+Mean absolute error                      0.2231
+Root mean squared error                  0.3343
+Relative absolute error                 89.1865 %
+Root relative squared error             94.5759 %
+Total Number of Instances              714     
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   <-- classified as
+   0   1   0  76   0   0 |   a = A.tomentosum
+   0 223   0  54   0   0 |   b = C.brasiliensis
+   0  28   0   1   0   0 |   c = M.guianensis
+   0  37   0 119   0   0 |   d = M.rubiginosa
+   0   4   0  36   0   0 |   e = P.ramiflora
+   0  98   0  37   0   0 |   f = P.torta
+
+=== Setup run 3 ===
+Dataset: ephenology_all-5-fold-3-06B.tra_val
+Folds: 5
+=== 5-fold Cross-validation run 3===
+Correctly Classified Instances         342               47.8992 %
+Incorrectly Classified Instances       372               52.1008 %
+Kappa statistic                          0.243 
+K&B Relative Info Score              16217.0103 %
+K&B Information Score                  362.8084 bits      0.5081 bits/instance
+Class complexity | order 0            1592.8902 bits      2.2309 bits/instance
+Class complexity | scheme             3492.3317 bits      4.8912 bits/instance
+Complexity improvement     (Sf)      -1899.4415 bits     -2.6603 bits/instance
+Mean absolute error                      0.2232
+Root mean squared error                  0.3345
+Relative absolute error                 89.2363 %
+Root relative squared error             94.6478 %
+Total Number of Instances              714     
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   <-- classified as
+   0   2   0  75   0   0 |   a = A.tomentosum
+   0 223   0  54   0   0 |   b = C.brasiliensis
+   0  28   0   1   0   0 |   c = M.guianensis
+   0  37   0 119   0   0 |   d = M.rubiginosa
+   0   4   0  36   0   0 |   e = P.ramiflora
+   0  99   0  36   0   0 |   f = P.torta
+
+=== Setup run 4 ===
+Dataset: ephenology_all-5-fold-4-06B.tra_val
+Folds: 5
+=== 5-fold Cross-validation run 4===
+Correctly Classified Instances         334               46.7787 %
+Incorrectly Classified Instances       380               53.2213 %
+Kappa statistic                          0.2335
+K&B Relative Info Score              15676.9509 %
+K&B Information Score                  350.7262 bits      0.4912 bits/instance
+Class complexity | order 0            1592.8902 bits      2.2309 bits/instance
+Class complexity | scheme             4576.488  bits      6.4096 bits/instance
+Complexity improvement     (Sf)      -2983.5978 bits     -4.1787 bits/instance
+Mean absolute error                      0.224 
+Root mean squared error                  0.3359
+Relative absolute error                 89.5773 %
+Root relative squared error             95.0222 %
+Total Number of Instances              714     
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   <-- classified as
+   0   4   0  61   0  12 |   a = A.tomentosum
+   0 218   0  44   0  15 |   b = C.brasiliensis
+   0  28   0   1   0   0 |   c = M.guianensis
+   0  47   0  90   0  19 |   d = M.rubiginosa
+   0   4   0  28   0   8 |   e = P.ramiflora
+   0  80   0  29   0  26 |   f = P.torta
+
+=== Setup run 5 ===
+Dataset: ephenology_all-5-fold-5-06B.tra_val
+Folds: 5
+=== 5-fold Cross-validation run 5===
+Correctly Classified Instances         340               47.619  %
+Incorrectly Classified Instances       374               52.381  %
+Kappa statistic                          0.24  
+K&B Relative Info Score              16129.5277 %
+K&B Information Score                  360.8512 bits      0.5054 bits/instance
+Class complexity | order 0            1592.8902 bits      2.2309 bits/instance
+Class complexity | scheme             4561.3122 bits      6.3884 bits/instance
+Complexity improvement     (Sf)      -2968.4219 bits     -4.1575 bits/instance
+Mean absolute error                      0.2232
+Root mean squared error                  0.3348
+Relative absolute error                 89.2354 %
+Root relative squared error             94.7206 %
+Total Number of Instances              714     
+=== Confusion Matrix ===
+
+   a   b   c   d   e   f   <-- classified as
+   0   2   0  75   0   0 |   a = A.tomentosum
+   0 221   0  56   0   0 |   b = C.brasiliensis
+   0  28   0   1   0   0 |   c = M.guianensis
+   0  37   0 119   0   0 |   d = M.rubiginosa
+   0   4   0  36   0   0 |   e = P.ramiflora
+   0  97   0  38   0   0 |   f = P.torta
+
+

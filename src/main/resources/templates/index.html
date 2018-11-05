@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <meta name="description" content="" />
+      <meta name="author" content="" />
+      <link rel="icon" href="../../favicon.ico" />
+      <title>ML Framework</title>
+      <!-- Bootstrap core CSS -->
+      <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+      <!-- Custom styles for this template -->
+      <link th:href="@{/css/justified-nav.css}" rel="stylesheet" />
+   </head>
+   <body>
+      <div class="container">
+         <!-- The justified navigation menu is meant for single line per list item.
+            Multiple lines will require custom code not provided by Bootstrap. -->
+         <div class="masthead">
+            <h3 class="text-muted">A Framework for Pattern Classifier Selection and Fusion</h3>
+            <nav>
+               <ul class="nav nav-justified">
+                  <li class="active"><a href="index">Home</a></li>
+                  <li><a href="experiment">Experiment</a></li>
+                  <li><a href="examples">Examples</a></li>
+                  <li><a href="documentation">Documentation</a></li>
+               </ul>
+            </nav>
+         </div>
+         <!-- Jumbotron -->
+         <div class="jumbotron">
+            <h1>Introduction</h1>
+            <p class="lead">This web application implements a Machine Learning Framework proposed by F. Faria [1]. <br />
+               Given a visual classification problem, a set of descriptors and a set of learning methods, the framework will learn patterns
+               from available instances for training in order to classify new and unseen instances.
+            </p>
+            <p><a class="btn btn-lg btn-success" href="experiment" role="button">Get started</a></p>
+         </div>
+         <!-- Example row of columns -->
+         <div class="row">
+            <div class="col-lg-4">
+               <h2>Dataset</h2>
+               <p>As an input for the application, a dataset shall be provided in .arff which is a Weka compatible format. </p>
+               <p><a class="btn btn-primary" href="http://storm.cis.fordham.edu/~gweiss/data-mining/weka-data/iris.arff" role="button">See example &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+               <h2>Configuration</h2>
+               <p>Along with the Dataset, a list of classifiers and its parameters shall be provided. </p>
+               <!-- <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p> -->
+            </div>
+            <div class="col-lg-4">
+               <h2>Output</h2>
+               <p>A report, which informs the classification´s statistics, is provided as output.</p>
+               <!-- <p><a class="btn btn-primary" href="#" role="button">View details &raquo;</a></p> -->
+            </div>
+         </div>
+         <!-- Site footer -->
+         <footer class="footer">
+            <p> <b> Please cite: </b> </p>
+            <p>[1] F. Faria. A Framework for Pattern Classifier Selection and Fusion. PhD thesis, Instituto de Computação, Unicamp, Campinas, SP, Brazil, 2014.</p>
+            <p> <b> Contact: </b> </p>
+            <p>Prof. Dr. Fabio Faria, e-mail: ffaria at unifesp.br</p>
+         </footer>
+      </div> <!-- /container -->
+   </body>
+</html>

@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="utf-8"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1"/>
+		<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+		<meta name="description" content="" />
+		<meta name="author" content="" />
+		<link rel="icon" href="../../favicon.ico" />
+		<title>ML Framework</title>
+		<!-- Bootstrap core CSS -->
+		<link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+		<!-- Custom styles for this template -->
+		<link th:href="@{/css/justified-nav.css}" rel="stylesheet" />
+	</head>
+	<body>
+		<div class="container">
+			<!-- The justified navigation menu is meant for single line per list item.
+				Multiple lines will require custom code not provided by Bootstrap. -->
+			<div class="masthead">
+				<h3 class="text-muted">A Framework for Pattern Classifier Selection and Fusion</h3>
+				<nav>
+					<ul class="nav nav-justified">
+						<li><a href="index">Home</a></li>
+						<li class="active"><a href="experiment">Experiment</a></li>
+						<li><a href="examples">Examples</a></li>
+						<li><a href="documentation">Documentation</a></li>
+					</ul>
+				</nav>
+			</div>
+			<!-- Jumbotron -->
+			<div class="jumbotron">
+				<form action="#" th:action="@{/experiment}" th:object="${message}" method="post" enctype="multipart/form-data">
+					<!-- enctype="multipart/form-data" -->
+					<h1>Experiment</h1>
+					<p class="lead">An experiment required the following inputs: <br /></p>
+					<br /> A Dataset in .arff format (Weka compatible file) <br />
+					<!--<p><a class="btn btn-lg btn-success" href="#" role="button">Select File</a></p> -->
+					<!--<p>Drag and drop here, or <label id="import-manual-trigger" class="btn-link">manually upload<input type="file" id="import-file-select" class="hidden"></label>.</p> -->
+					<p class="lead"> The program will divide it into train, validation and test. <br /></p>
+					<p><label id="import-manual-trigger" class="btn btn-lg btn-success">Select File<input type="file" name="file" id="import-file-select" class="hidden" /></label></p>
+					<!--
+						<div class="col-lg-4">
+						<p class="lead"> Select Test <br /></p>
+						   <p><label id="import-manual-trigger" class="btn btn-lg btn-success">Select File<input type="file" name="file2" id="import-file-select" class="hidden"></label></p>
+						</div> -->
+					<div class="form-group">
+						<!-- Example row of columns -->
+						<div class="row">
+							<div class="col-lg-6">
+								<p class="lead"> A list of classifiers and its parameters <br /></p>
+								<div id="tree"></div>
+								<p class="lead"> Configure the classifiers's parameters here: <br /></p>
+								<textarea class="form-control" rows="5" id="commentC" th:field="*{contentClassifiers}"></textarea>
+							</div>
+							<div class="col-lg-6">
+								<p class="lead"> A list of classifiers for Fusion and its parameters <br /></p>
+								<div id="treeFusion"></div>
+								<p class="lead"> Configure the classifiers's parameters here: <br /></p>
+								<textarea class="form-control" rows="5" id="commentF" th:field="*{contentFusion}"></textarea>
+							</div>
+						</div>
+						<!-- <label for="comment">For more info, look at http://weka.sourceforge.net/doc.dev/weka/classifiers/Classifier.html</label>-->
+						<!-- Example row of columns -->
+						<div class="row">
+							<div class="col-lg-6">
+								<p>Folds:</p>
+								<!--<select th:field="*{folds}">
+									<option th:each="type : ${folds}" th:value="${type}" th:text="#{${type}}">Wireframe</option>
+									</select> -->
+								<select th:field="*{folds}" class="form-control" id="sel1">
+<!-- 									<option value="2">2</option> -->
+<!-- 									<option value="3">3</option> -->
+<!-- 									<option value="4">4</option> -->
+									<option value="5">5</option>
+<!-- 									<option value="6">6</option> -->
+<!-- 									<option value="7">7</option> -->
+<!-- 									<option value="8">8</option> -->
+								</select>
+							</div>
+							<div class="col-lg-6">
+							    <label for="comment">For more info, look at http://weka.sourceforge.net/doc.dev/weka/classifiers/Classifier.html</label>
+							</div>
+							<!--<div class="col-lg-4">
+								<p class="lead"> Evaluation Metrics: <br /></p>
+								<div class="checkbox">
+									<label><input type="checkbox" value="1" th:field="*{checkbox_1}" />Metric 1</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox" value="2" th:field="*{checkbox_2}" />Metric 2</label>
+								</div>
+							</div>
+							<div class="col-lg-4">
+								<p class="lead"> Statistic Metrics: <br /></p>
+								<div class="checkbox">
+									<label><input type="checkbox" value="3" th:field="*{checkbox_3}"/>Statistic 1</label>
+								</div>
+								<div class="checkbox">
+									<label><input type="checkbox" value="4" th:field="*{checkbox_4}"/>Statistic 2</label>
+								</div>
+							</div>-->
+						</div>
+						<p>
+							<input type="submit" value="run" class="btn btn-lg btn-success" href="running" /> 
+						</p>
+							<!-- <p><a class="btn btn-lg btn-success" href="running.html" role="button">Run</a></p> -->
+					</div>
+					<!-- <p><a class="btn btn-lg btn-success" href="running.html" role="button">Run</a></p> -->
+				</form>
+			</div>
+		</div>
+		<!-- /container -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script th:src="@{/js/bootstrap-treeview.min.js}"></script>
+		<script>
+			var mytree = [
+			  {
+				text: "bayes",
+				//icon: "glyphicon glyphicon-stop",
+				//selectedIcon: "glyphicon glyphicon-stop",
+				//color: "#000000",
+				//backColor: "#FFFFFF",
+				href: "#bayes",
+				selectable: false,
+				state: {
+					checked: false,
+					disabled: false,
+					expanded: false,
+					selected: false
+				},
+				tags: ['available'],
+				nodes: [
+				  {
+					text: "BayesNet",
+					icon: "weka.classifiers.bayes.BayesNet -D",
+					href: "#BayesNet"
+				  },
+				  {
+					text: "NaiveBayes",
+					icon: "weka.classifiers.bayes.NaiveBayes",
+					href: "#NaiveBayes"
+				  },
+				  {
+					text: "NaiveBayesMultinomial",
+					icon: "weka.classifiers.bayes.NaiveBayesMultinomial",
+					href: "#NaiveBayesMultinomial"
+				  },
+				  {
+					text: "NaiveBayesMultinomialText",
+					icon: "weka.classifiers.bayes.NaiveBayesMultinomialText",
+					href: "#NaiveBayesMultinomialText"
+				  },
+				  {
+					text: "NaiveBayesMultinomialUpdateable",
+					icon: "weka.classifiers.bayes.NaiveBayesMultinomialUpdateable",
+					href: "#NaiveBayesMultinomialUpdateable"
+				  },
+				  {
+					text: "NaiveBayesUpdateable",
+					icon: "weka.classifiers.bayes.NaiveBayesUpdateable",
+					href: "#NaiveBayesUpdateable"
+				  }
+				]
+			  },
+			  {
+				text: "functions",
+				//icon: "glyphicon glyphicon-stop",
+				//selectedIcon: "glyphicon glyphicon-stop",
+				//color: "#000000",
+				//backColor: "#FFFFFF",
+				href: "#functions",
+				selectable: false,
+				state: {
+					checked: false,
+					disabled: false,
+					expanded: false,
+					selected: false
+				},
+				tags: ['available'],
+				nodes: [
+				  {
+					text: "GaussianProcesses",
+					icon: "weka.classifiers.functions.GaussianProcesses -L 1.0 -N 0 -S 1",
+					href: "#GaussianProcesses"
+				  },
+				  {
+					text: "LinearRegression",
+					icon: "weka.classifiers.functions.LinearRegression -S 0 -R 1.0E-8 -num-decimal-places 4",
+					href: "#LinearRegression"
+				  },
+				  {
+					text: "Logistic",
+					icon: "weka.classifiers.functions.Logistic -R 1.0E-8 -M -1 -num-decimal-places 4",
+					href: "#Logistic"
+				  },
+				  {
+					text: "MultilayerPerceptron",
+					icon: "weka.classifiers.functions.MultilayerPerceptron -L 0.3 -M 0.2 -N 500 -V 0 -S 0 -E 20 -H a",
+					href: "#MultilayerPerceptron"
+				  },
+				  {
+					text: "SGD",
+					icon: "weka.classifiers.functions.SGD -F 0 -L 0.01 -R 1.0E-4 -E 500 -C 0.001 -S 1",
+					href: "#SGD"
+				  },
+				  {
+					text: "SGDText",
+					icon: "weka.classifiers.functions.SGDText -F 0 -L 0.01 -R 1.0E-4 -E 500 -P 0 -M 3.0 -min-coeff 0.001 -norm 1.0 -lnorm 2.0 -stopwords-handler weka.core.stopwords.Null -tokenizer 'weka.core.tokenizers.WordTokenizer -delimiters \' \\r\\n\\t.,;:\\\'\\\"()?!\'' -stemmer weka.core.stemmers.NullStemmer -S 1",
+					href: "#SGDText"
+				  },
+				  {
+					text: "SimpleLinearRegression",
+					icon: "weka.classifiers.functions.SimpleLinearRegression",
+					href: "#SimpleLinearRegression"
+				  },
+				  {
+					text: "SimpleLogistic",
+					icon: "weka.classifiers.functions.SimpleLogistic -I 0 -M 500 -H 50 -W 0.0",
+					href: "#SimpleLogistic"
+				  },
+				  {
+					text: "SMO",
+					icon: "weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1",
+					href: "#SMO"
+				  },
+				  {
+					text: "SMOreg",
+					icon: "weka.classifiers.functions.SMOreg -C 1.0 -N 0",
+					href: "#SMOreg"
+				  },
+				  {
+					text: "VotedPerceptron",
+					icon: "weka.classifiers.functions.VotedPerceptron -I 1 -E 1.0 -S 1 -M 10000",
+					href: "#VotedPerceptron"
+				  }
+				]
+			  },
+			{
+				text: "lazy",
+				//icon: "glyphicon glyphicon-stop",
+				//selectedIcon: "glyphicon glyphicon-stop",
+				//color: "#000000",
+				//backColor: "#FFFFFF",
+				href: "#lazy",
+				selectable: false,
+				state: {
+					checked: false,
+					disabled: false,
+					expanded: false,
+					selected: false
+				},
+				tags: ['available'],
+				nodes: [
+				  {
+					text: "IBk",
+					icon: "weka.classifiers.lazy.IBk -K 1 -W 0",
+					href: "#IBk"
+				  },
+				  {
+					text: "KStar",
+					icon: "weka.classifiers.lazy.KStar -B 20 -M a",
+					href: "#KStar"
+				  },
+				  {
+					text: "LWL",
+					icon: "weka.classifiers.lazy.LWL -U 0",
+					href: "#LWL"
+				  }
+				]
+			  },
+			  {
+				text: "meta",
+				//icon: "glyphicon glyphicon-stop",
+				//selectedIcon: "glyphicon glyphicon-stop",
+				//color: "#000000",
+				//backColor: "#FFFFFF",
+				href: "#meta",
+				selectable: false,
+				state: {
+					checked: false,
+					disabled: false,
+					expanded: false,
+					selected: false
+				},
+				tags: ['available'],
+				nodes: [
+				  {
+					text: "AdaBoostM1",
+					icon: "weka.classifiers.meta.AdaBoostM1 -P 100 -S 1 -I 10",
+					href: "#AdaBoostM1"
+				  },
+				  {
+					text: "AdditiveRegression",
+					icon: "weka.classifiers.meta.AdditiveRegression -S 1.0 -I 10",
+					href: "#AdditiveRegression"
+				  },
+				  {
+					text: "AttributeSelectedClassifier",
+					icon: "weka.classifiers.meta.AttributeSelectedClassifier",
+					href: "#AttributeSelectedClassifier"
+				  },
+				  {
+					text: "Bagging",
+					icon: "weka.classifiers.meta.Bagging",
+					href: "#Bagging"
+				  },
+				  {
+					text: "ClassificationViaRegression",
+					icon: "weka.classifiers.meta.ClassificationViaRegression",
+					href: "#ClassificationViaRegression"
+				  },
+				  {
+					text: "CostSensitiveClassifier",
+					icon: "weka.classifiers.meta.CostSensitiveClassifier -N 'C:\\Program Files\\Weka-3-8' -S 1",
+					href: "#CostSensitiveClassifier"
+				  },
+				  {
+					text: "CVParameterSelection",
+					icon: "weka.classifiers.meta.CVParameterSelection -X 10 -S 1",
+					href: "#CVParameterSelection"
+				  },
+				  {
+					text: "FilteredClassifier",
+					icon: "weka.classifiers.meta.FilteredClassifier",
+					href: "#FilteredClassifier"
+				  },
+				  {
+					text: "IterativeClassifierOptimizer",
+					icon: "weka.classifiers.meta.IterativeClassifierOptimizer -L 50 -P 1 -E 1 -I 1 -F 10 -R 1 -metric RMSE -S 1 -- -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 1 -E 1 -S 1 -I 10",
+					href: "#IterativeClassifierOptimizer"
+				  },
+				  {
+					text: "LogitBoost",
+					icon: "weka.classifiers.meta.LogitBoost -P 100 -L -1.7976931348623157E308 -H 1.0 -Z 3.0 -O 1 -E 1 -S 1 -I 10",
+					href: "#LogitBoost"
+				  },
+				  {
+					text: "MultiClassClassifier",
+					icon: "weka.classifiers.meta.MultiClassClassifier",
+					href: "#MultiClassClassifier"
+				  },
+				  {
+					text: "MultiClassClassifierUpdateable",
+					icon: "weka.classifiers.meta.MultiClassClassifierUpdateable",
+					href: "#MultiClassClassifierUpdateable"
+				  },
+				  {
+					text: "MultiScheme",
+					icon: "weka.classifiers.meta.MultiScheme -X 0 -S 1",
+					href: "##MultiScheme"
+				  },
+				  {
+					text: "RandomCommittee",
+					icon: "weka.classifiers.meta.RandomCommittee",
+					href: "#RandomCommittee"
+				  },
+				  {
+					text: "RandomizableFilteredClassifier",
+					icon: "weka.classifiers.meta.RandomizableFilteredClassifier",
+					href: "#RandomizableFilteredClassifier"
+				  },
+				  {
+					text: "RandomSubSpace",
+					icon: "weka.classifiers.meta.RandomSubSpace",
+					href: "#RandomSubSpace"
+				  },
+				  {
+					text: "RegressionByDiscretization",
+					icon: "weka.classifiers.meta.RegressionByDiscretization",
+					href: "#RegressionByDiscretization"
+				  },
+				  {
+					text: "Stacking",
+					icon: "weka.classifiers.meta.Stacking -X 10 -S 1 -num-slots 1",
+					href: "#Stacking"
+				  },
+				  {
+					text: "Vote",
+					icon: "weka.classifiers.meta.Vote -S 1 -R AVG",
+					href: "#Vote"
+				  },
+				  {
+					text: "WeightedInstancesHandlerWrapper",
+					icon: "weka.classifiers.meta.WeightedInstancesHandlerWrapper -S 1",
+					href: "#WeightedInstancesHandlerWrapper"
+				  }
+				]
+			  },
+			  {
+				text: "misc",
+				//icon: "glyphicon glyphicon-stop",
+				//selectedIcon: "glyphicon glyphicon-stop",
+				//color: "#000000",
+				//backColor: "#FFFFFF",
+				href: "#misc",
+				selectable: false,
+				state: {
+					checked: false,
+					disabled: false,
+					expanded: false,
+					selected: false
+				},
+				tags: ['available'],
+				nodes: [
+				  {
+					text: "InputMappedClassifier",
+					icon: "weka.classifiers.misc.InputMappedClassifier -I -trim",
+					href: "#InputMappedClassifier"
+				  },
+				  {
+					text: "SerializedClassifier",
+					icon: "weka.classifiers.misc.SerializedClassifier -model 'C:\\Program Files\\Weka-3-8'",
+					href: "#SerializedClassifier"
+				  }
+				]
+			  },
+			  {
+				text: "rules",
+				//icon: "glyphicon glyphicon-stop",
+				//selectedIcon: "glyphicon glyphicon-stop",
+				//color: "#000000",
+				//backColor: "#FFFFFF",
+				href: "#rules",
+				selectable: false,
+				state: {
+					checked: false,
+					disabled: false,
+					expanded: false,
+					selected: false
+				},
+				tags: ['available'],
+				nodes: [
+				  {
+					text: "DecisionTable",
+					icon: "weka.classifiers.rules.DecisionTable -X 1",
+					href: "#DecisionTable"
+				  },
+				  {
+					text: "JRip",
+					icon: "weka.classifiers.rules.JRip -F 3 -N 2.0 -O 2 -S 1",
+					href: "#JRip"
+				  },
+				  {
+					text: "M5Rules",
+					icon: "weka.classifiers.rules.M5Rules -M 4.0",
+					href: "#M5Rules"
+				  },
+				  {
+					text: "OneR",
+					icon: "weka.classifiers.rules.OneR -B 6",
+					href: "#OneR"
+				  },
+				  {
+					text: "PART",
+					icon: "weka.classifiers.rules.PART -M 2 -C 0.25 -Q 1",
+					href: "#PART"
+				  },
+				  {
+					text: "ZeroR",
+					icon: "weka.classifiers.rules.ZeroR",
+					href: "#ZeroR"
+				  }
+				]
+			  },
+			  {
+				text: "trees",
+				//icon: "glyphicon glyphicon-stop",
+				//selectedIcon: "glyphicon glyphicon-stop",
+				//color: "#000000",
+				//backColor: "#FFFFFF",
+				href: "#trees",
+				selectable: false,
+				state: {
+					checked: false,
+					disabled: false,
+					expanded: false,
+					selected: false
+				},
+				tags: ['available'],
+				nodes: [
+				  {
+					text: "DecisionStump",
+					icon: "weka.classifiers.trees.DecisionStump",
+					href: "#DecisionStump"
+				  },
+				  {
+					text: "HoeffdingTree",
+					icon: "weka.classifiers.trees.HoeffdingTree -L 2 -S 1 -E 1.0E-7 -H 0.05 -M 0.01 -G 200.0 -N 0.0",
+					href: "#HoeffdingTree"
+				  },
+				  {
+					text: "J48",
+					icon: "weka.classifiers.trees.J48 -C 0.25 -M 2",
+					href: "#J48"
+				  },
+				  {
+					text: "LMT",
+					icon: "weka.classifiers.trees.LMT -I -1 -M 15 -W 0.0",
+					href: "#LMT"
+				  },
+				  {
+					text: "M5P",
+					icon: "weka.classifiers.trees.M5P -M 4.0",
+					href: "#M5P"
+				  },
+				  {
+					text: "RandomForest",
+					icon: "weka.classifiers.trees.RandomForest -P 100 -I 100 -num-slots 1 -K 0 -M 1.0 -V 0.001 -S 1",
+					href: "#RandomForest"
+				  },
+				  {
+					text: "RandomTree",
+					icon: "weka.classifiers.trees.RandomTree -K 0 -M 1.0 -V 0.001 -S 1",
+					href: "#RandomTree"
+				  },
+				  {
+					text: "REPTree",
+					icon: "weka.classifiers.trees.REPTree -M 2 -V 0.001 -N 3 -S 1 -L -1 -I 0.0",
+					href: "#REPTree"
+				  }
+				]
+			  }
+			
+			];
+			
+			
+			var mytreeFusion = [
+			  {
+				text: "fusion",
+				href: "#fusion",
+				selectable: false,
+				state: {
+					checked: false,
+					disabled: false,
+					expanded: true,
+					selected: false
+				},
+				tags: ['available'],
+				nodes: [
+				  {
+					text: "SMO",
+					icon: "weka.classifiers.functions.SMO -C 1.0 -L 0.001 -P 1.0E-12 -N 0 -V -1 -W 1",
+					href: "#SMO"
+				  },
+				  {
+					text: "IBk",
+					icon: "weka.classifiers.lazy.IBk -K 1 -W 0",
+					href: "#IBk"
+				  }
+				]
+			  }
+			];
+			
+
+			
+			
+			$('#tree').treeview({
+				data: mytree,
+				multiSelect: true,
+				//onNodeSelected: function(event, node) {
+			       //      $('#selectable-output').prepend('<p>' + node.text + ' was selected</p>');
+			       //}				
+				onNodeSelected: function(event, node) {
+					document.getElementById("commentC").value += node.icon + '\n';
+			$('#tree').treeview('collapseAll', { silent: true });
+					//var targ = event.target || event.srcElement;
+					//document.getElementById("comments").value += targ.textContent || targ.innerText;
+				},
+			
+			  });
+			
+			
+			$('#treeFusion').treeview({
+				data: mytreeFusion,
+				multiSelect: true,
+			
+				onNodeSelected: function(event, node) {
+					document.getElementById("commentF").value += node.icon + '\n';
+			$('#tree').treeview('collapseAll', { silent: true });
+				},
+			  });
+			
+		</script>
+	</body>
+</html>

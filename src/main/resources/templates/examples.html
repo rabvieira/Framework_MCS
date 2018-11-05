@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="utf-8"/>
+      <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+      <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+      <meta name="description" content=""/>
+      <meta name="author" content=""/>
+      <link rel="icon" href="../../favicon.ico"/>
+      <title>ML Framework</title>
+      <!-- Bootstrap core CSS -->
+      <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet"/>
+      <!-- Custom styles for this template -->
+      <link th:href="@{/css/justified-nav.css}" rel="stylesheet"/>
+   </head>
+   <body>
+      <div class="container">
+         <!-- The justified navigation menu is meant for single line per list item.
+            Multiple lines will require custom code not provided by Bootstrap. -->
+         <div class="masthead">
+            <h3 class="text-muted">A Framework for Pattern Classifier Selection and Fusion</h3>
+            <nav>
+               <ul class="nav nav-justified">
+                  <li><a href="index">Home</a></li>
+                  <li><a href="experiment">Experiment</a></li>
+                  <li class="active"><a href="examples">Examples</a></li>
+                  <li><a href="documentation">Documentation</a></li>
+               </ul>
+            </nav>
+         </div>
+         <!-- Jumbotron -->
+         <div class="jumbotron">
+            <h1>Examples</h1>
+            <p class="lead">Choose a given dataset</p>
+		    <form action="#" th:action="@{/examples}" th:object="${message}" method="post">
+               <div class="form-group">
+				  <select th:field="*{folds}" class="form-control" id="sel1">
+                     <option value="1">Dataset 1</option>
+                     <option value="2">Dataset 2</option>
+                     <option value="3">Dataset 3</option>
+                     <option value="4">Dataset 4</option>
+                  </select>
+               </div>
+               <p class="lead">Choose at least one of the following classifiers </p>
+               <div class="checkbox">
+				  <label><input type="checkbox" value="1" th:field="*{checkbox_1}"/>____IBk____</label>
+               </div>
+               <div class="checkbox">
+				  <label><input type="checkbox" value="2" th:field="*{checkbox_2}"/>__Bagging__</label>
+               </div>
+               <div class="checkbox">
+				  <label><input type="checkbox" value="3" th:field="*{checkbox_3}"/>RandomTree</label>
+               </div>
+               <div class="checkbox">
+				  <label><input type="checkbox" value="4" th:field="*{checkbox_4}"/>____J48____</label>
+               </div>
+			   <p><input type="submit" value="run" class="btn btn-lg btn-success" href="running" /> </p>
+			   <!-- <p><a class="btn btn-lg btn-success" href="running" role="button">Run</a></p> -->
+			</form>
+            <br> For more info, look at http://weka.sourceforge.net/doc.dev/weka/classifiers/Classifier.html </br>
+         </div>
+      </div> <!-- /container -->
+   </body>
+</html>
